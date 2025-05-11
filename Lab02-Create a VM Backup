@@ -26,3 +26,13 @@ az backup protection backup-now \
     --item-name NW-RHEL01 \
     --retain-until 18-10-2030 \
     --backup-management-type AzureIaasVM
+
+# Difference between ConfigureBackup & Backup operation:
+	
+ConfigureBackup:	
+1. Set up or modify backup settings	
+2. First-time setup or policy change
+
+Backup:
+1. Run an immediate backup	
+2. Trigger backup on demand
