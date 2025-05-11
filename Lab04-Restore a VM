@@ -1,0 +1,27 @@
+# Restore a Virtual Machine
+
+1. Create a storage account to use as a staging location
+2. Select Review + create.
+3. After validation passes, select Create.
+4. Stop the virtual machine
+5. In the menu pane of the VM, scroll and select Backup.
+6. Click on Restore VM
+7. Select the Restore point (a default of 2 weeks/14 days is shown) & OK
+8. For Restore target, select "Replace existing" & Staging location will be the storage account created
+9. Click Restore
+10.The notification will show: Triggering restore for..
+11.To monitor the restore operation:
+az backup job list \
+  --resource-group vmbackups \
+  --vault-name azure-backup \
+  --query "[?operation=='Restore']" \
+  --output table
+
+Get detailed status of a specific job
+az backup job show \
+  --resource-group vmbackups \
+  --vault-name azure-backup \
+  --name <job-id>
+
+OR 
+az backup job list --resource-group vmbackups --vault-name azure-backup --output table
