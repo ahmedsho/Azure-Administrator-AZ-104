@@ -1,0 +1,3 @@
+# How to register an Azure Resource for Cloudshell:
+From Azure Portal -> Subscription -> Settings "Resource providers"
+Enter the name of the provider and click on "Register"
