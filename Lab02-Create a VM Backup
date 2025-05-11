@@ -1,1 +1,28 @@
+# Create the Azure Backup vault [Bash]
+az backup vault create --resource-group vmbackups --location westus2 --name azure-backup
 
+# Enable/Configure backup for a Windows VM [Bash]
+az backup protection enable-for-vm --resource-group vmbackups --vault-name azure-backup --vm NW-APP01 --policy-name EnhancedPolicy
+
+# Enable/Configure backup for a Linux VM [Bash]
+az backup protection enable-for-vm --resource-group vmbackups --vault-name azure-backup --vm NW-RHEL01 --policy-name EnhancedPolicy
+
+# Monitor the progress of the backup [Bash]
+az backup job list --resource-group vmbackups --vault-name azure-backup --output table
+
+# Do an Initial Backup of the VM [Bash]
+az backup protection backup-now \
+    --resource-group vmbackups \
+    --vault-name azure-backup \
+    --container-name NW-APP01 \
+    --item-name NW-APP01 \
+    --retain-until 18-10-2030 \
+    --backup-management-type AzureIaasVM
+
+az backup protection backup-now \
+    --resource-group vmbackups \
+    --vault-name azure-backup \
+    --container-name NW-RHEL01 \
+    --item-name NW-RHEL01 \
+    --retain-until 18-10-2030 \
+    --backup-management-type AzureIaasVM
