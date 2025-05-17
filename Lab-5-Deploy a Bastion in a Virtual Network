@@ -1,0 +1,28 @@
+# CREATE AN AZURE VIRTUAL NETWORK
+https://learn.microsoft.com/en-us/azure/virtual-network/quickstart-create-virtual-network?tabs=portal
+A virtual network is the fundamental building block for private networks in Azure. Azure Virtual Network enables Azure resources like VMs to securely communicate with each other and the internet.
+
+===
+CREATE RESOURCE GROUP
+az group create --name test-rg --location eastus2
+
+CREATE A VIRTUAL NETWORK & SUBNET
+az network vnet create --name vnet-1 --resource-group test-rg --address-prefix 10.0.0.0/16 --subnet-name subnet-1 --subnet-prefixes 10.0.0.0/24
+
+DEPLOY AZURE BASTION
+az network vnet subnet create --name AzureBastionSubnet --resource-group test-rg --vnet-name vnet-1 --address-prefix 10.0.1.0/26 [create a Bastion subnet for your virtual network]
+az network public-ip create --resource-group test-rg --name public-ip --sku Standard --location eastus2 --zone 1 2 3 [Create a public IP address for Bastion]
+az network bastion create --name bastion --public-ip-address public-ip --resource-group test-rg --vnet-name vnet-1 --location eastus2 [create a Bastion host in AzureBastionSubnet for your virtual network]
+
+CREATE VIRTUAL MACHINES
+az vm create --resource-group test-rg --admin-username azureuser --authentication-type password --name vm-1 --image Ubuntu2204 --public-ip-address "" [create vm-1]
+az vm create --resource-group test-rg --admin-username azureuser --authentication-type password --name vm-2 --image Ubuntu2204 --public-ip-address "" [create vm-2]
+
+(if the above vm creation doesn't work, provision the VMs via the Azure Portal for ease. VM images and sizes changes with them)
+
+CONNECT TO THE VIRTUAL MACHINES THROUGH THE BASTION
+From Azure portal -> Virtual Machine -> Connect via Bastion -> "SSH" -> "username/password"
+
+COMMUNICATION BETWEEN VMs
+[Connect to vm-1] & run "ping -c 4 vm-2"
+[Connect to vm-2] & run "ping -c 4 vm-1"
